@@ -1,11 +1,247 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="ru">
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KMPCO & MADXS - GigaPlata - ofical</title>
+  <meta name="description" content="KMPCO & MADXS - GigaPlata - ofical — neon landing with animated visuals and a Download button for your Python file." />
+  <style>
+    /* ---------- Reset ---------- */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial}
+    body{background:#05060a;overflow:hidden;color:#e6f0ff}
+
+    /* ---------- Background animated gradient + stars canvas ---------- */
+    .bg {
+      position:fixed;inset:0;z-index:0;filter:blur(6px) saturate(1.05);
+      background: radial-gradient(ellipse at 10% 20%, rgba(140,32,255,0.12), transparent 10%),
+                  radial-gradient(ellipse at 90% 80%, rgba(0,240,255,0.06), transparent 12%),
+                  linear-gradient(120deg,#030215 0%, #07102b 50%, #0b0920 100%);
+    }
+
+    canvas#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+    /* ---------- Center content ---------- */
+    .wrap{position:relative;z-index:5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px}
+    .card{
+      width:min(1100px,95%);background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border-radius:18px;padding:36px;border:1px solid rgba(255,255,255,0.04);
+      box-shadow:0 10px 40px rgba(2,6,23,0.7), 0 0 40px rgba(105,48,255,0.06) inset;
+      overflow:hidden;backdrop-filter: blur(6px) saturate(1.05)
+    }
+
+    /* ---------- Neon header ---------- */
+    .hero{display:flex;gap:24px;align-items:center}
+    .logo{
+      width:160px;height:160px;border-radius:20px;flex:0 0 160px;display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.02);
+      box-shadow:0 6px 30px rgba(125,0,255,0.12), 0 0 40px rgba(55,200,255,0.06)
+    }
+    .logo .mark{font-weight:900;font-size:26px;letter-spacing:0.6px;color:#fff;text-transform:uppercase;
+      text-shadow:0 0 8px rgba(120,40,255,0.8), 0 0 24px rgba(0,200,255,0.15)}
+
+    .titles{flex:1}
+    h1.title{
+      font-size:34px;margin-bottom:6px;line-height:1.05;font-weight:800;color:#e9f0ff;
+      text-shadow:0 0 10px rgba(125,40,255,0.16), 0 0 36px rgba(0,240,255,0.04);
+      position:relative;display:inline-block
+    }
+    /* neon underline animation */
+    h1.title::after{content:'';position:absolute;left:0;bottom:-6px;height:6px;width:80%;border-radius:6px;filter:blur(8px);
+      background:linear-gradient(90deg,#7d28ff,#00f0ff);opacity:0.9;transform:scaleX(0);transform-origin:left;transition:transform 0.9s cubic-bezier(.2,.9,.2,1)}
+    h1.title:hover::after{transform:scaleX(1)}
+
+    p.lead{opacity:0.85;margin-bottom:14px}
+
+    /* ---------- Buttons ---------- */
+    .controls{display:flex;gap:12px;align-items:center;margin-top:10px}
+    .btn{
+      -webkit-tap-highlight-color:transparent;position:relative;display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;font-weight:700;border:1px solid rgba(255,255,255,0.06);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));cursor:pointer;user-select:none;overflow:hidden
+    }
+    .btn.neon{
+      color:#05060a;background:linear-gradient(90deg,#7d28ff,#00f0ff);text-shadow:0 0 18px rgba(255,255,255,0.04);
+      box-shadow:0 6px 30px rgba(125,40,255,0.14), 0 0 28px rgba(0,240,255,0.08);
+      border:1px solid rgba(255,255,255,0.06)
+    }
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+
+    /* small neon pulse */
+    .btn.neon:after{content:'';position:absolute;inset:-2px;border-radius:14px;box-shadow:0 0 40px rgba(125,40,255,0.22);opacity:0;transition:opacity .2s}
+    .btn.neon:hover:after{opacity:1}
+
+    /* ---------- Download area ---------- */
+    .download-area{display:grid;grid-template-columns:1fr 360px;gap:20px;margin-top:26px;align-items:center}
+    .desc{min-height:160px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.03)}
+
+    .drop{height:140px;border-radius:12px;border:2px dashed rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;padding:14px;cursor:pointer;transition:all .18s}
+    .drop.dragover{background:linear-gradient(90deg, rgba(125,40,255,0.06), rgba(0,240,255,0.03));transform:scale(1.01);border-color:rgba(125,40,255,0.4)}
+    .drop small{opacity:0.9}
+
+    .meta{font-family:monospace;font-size:13px;color:#dfeeff;opacity:0.9}
+    .file-name{font-weight:700;display:block;margin-top:8px}
+
+    /* right column card */
+    .panel{padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.03)}
+
+    .preview{height:86px;border-radius:10px;background:linear-gradient(90deg,#020013, rgba(255,255,255,0.005));display:flex;align-items:center;padding:10px;gap:12px}
+    .file-ico{width:64px;height:64px;border-radius:8px;background:linear-gradient(180deg,#7d28ff,#002e5b);display:grid;place-items:center;font-weight:900;color:#fff;font-family:monospace}
+
+    .progress{height:8px;border-radius:6px;background:rgba(255,255,255,0.04);margin-top:10px;overflow:hidden}
+    .progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#7d28ff,#00f0ff);transition:width .5s cubic-bezier(.2,.9,.2,1)}
+
+    /* footer neon strip */
+    .neon-strip{height:6px;border-radius:6px;margin-top:20px;background:linear-gradient(90deg,#ff20f0,#7d28ff,#00f0ff);filter:blur(6px);opacity:0.95}
+
+    /* responsive */
+    @media (max-width:900px){.download-area{grid-template-columns:1fr;}.logo{display:none;width:0;height:0}.card{padding:20px}}
+  </style>
 </head>
-<body style="background-color: rgb(0, 7, 1);">
-    <p> Hello World </p>
+<body>
+  <div class="bg"></div>
+  <canvas id="stars"></canvas>
+
+  <main class="wrap">
+    <section class="card" role="main">
+      <div class="hero">
+        <div class="logo"><div class="mark">KMPCO<br>& MADXS</div></div>
+        <div class="titles">
+          <h1 class="title">KMPCO & MADXS - GigaPlata - ofical</h1>
+          <p class="lead">Неоновая посадочная страница — скачай свой Python-скрипт одним кликом. Красиво, плавно, с подсветкой и анимацией.</p>
+
+          <div class="controls">
+            <button class="btn neon" id="downloadStatic">Скачать</button>
+            <label class="btn ghost" for="fileInput">Загрузить свой .py</label>
+            <input id="fileInput" type="file" accept=".py" style="display:none" />
+          </div>
+        </div>
+      </div>
+
+      <div class="download-area">
+        <div class="desc">
+          <div class="drop" id="dropZone">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v10" stroke="#cde7ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 8l5-5 5 5" stroke="#cde7ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 21H3" stroke="#cde7ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div>
+              <strong>Перетащи сюда свой .py или кликни</strong>
+              <small>Файл останется только у тебя — можно проверить локально или загрузить на сервер.</small>
+            </div>
+          </div>
+
+          <div class="meta">
+            <span class="file-name" id="fileName">Имя файла: —</span>
+            <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+            <div style="margin-top:8px;font-size:13px;opacity:0.85">Поддерживаются: .py — если хочешь, можешь разместить файл на сервере (папка <code>/downloads</code>) и кнопка "Скачать" будет вести на прямую ссылку.</div>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <div class="preview">
+            <div class="file-ico">.py</div>
+            <div>
+              <div style="font-weight:800">Готово к скачиванию</div>
+              <div style="opacity:0.85;margin-top:6px;font-size:13px">Любой загруженный файл можно затем скачать кнопкой "Скачать".</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <button class="btn neon" id="downloadBlob">Скачать (локально)</button>
+            <button class="btn ghost" id="copyName">Копировать имя</button>
+          </div>
+
+          <div class="neon-strip" aria-hidden="true"></div>
+        </aside>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    // ---------- Stars background ----------
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = innerWidth;
+    let h = canvas.height = innerHeight;
+    const stars = [];
+    for (let i=0;i<160;i++) stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+0.2,a:Math.random()});
+    function drawStars(){
+      ctx.clearRect(0,0,w,h);
+      for (const s of stars){
+        ctx.globalAlpha = s.a*Math.abs(Math.sin(Date.now()/1200 + s.x*0.001));
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.9)';ctx.fill();
+      }
+    }
+    addEventListener('resize',()=>{w=canvas.width=innerWidth;h=canvas.height=innerHeight});
+    (function loop(){drawStars();requestAnimationFrame(loop)})();
+
+    // ---------- File handling & download ----------
+    const fileInput = document.getElementById('fileInput');
+    const dropZone = document.getElementById('dropZone');
+    const fileNameEl = document.getElementById('fileName');
+    const progressBar = document.getElementById('progressBar');
+    let currentFile = null;
+
+    function setProgress(p){progressBar.style.width = Math.round(p*100)+'%'}
+
+    function setFile(f){
+      currentFile = f;
+      fileNameEl.textContent = 'Имя файла: ' + (f ? f.name : '—');
+      setProgress(f ? 1 : 0);
+    }
+
+    fileInput.addEventListener('change',(e)=>{ if(e.target.files[0]) setFile(e.target.files[0]); })
+
+    ;['dragenter','dragover'].forEach(ev=>dropZone.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();dropZone.classList.add('dragover')}))
+    ;['dragleave','dragend','drop'].forEach(ev=>dropZone.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();dropZone.classList.remove('dragover')}))
+    dropZone.addEventListener('drop',e=>{const f = e.dataTransfer.files[0]; if(f) setFile(f)})
+
+    // Download - option A: static link (server-hosted)
+    const downloadStatic = document.getElementById('downloadStatic');
+    downloadStatic.addEventListener('click',()=>{
+      // By default we look for /downloads/your_script.py on the same server.
+      // If you host the file in a folder 'downloads' next to index.html and name it "your_script.py" — this will trigger download.
+      const staticPath = '/downloads/your_script.py';
+      // create hidden anchor
+      const a = document.createElement('a');a.href = staticPath;a.setAttribute('download','your_script.py');document.body.appendChild(a);a.click();a.remove();
+      // If the file isn't found on server, the user will likely get a 404.
+    })
+
+    // Download - option B: blob from uploaded file (local only)
+    const downloadBlob = document.getElementById('downloadBlob');
+    downloadBlob.addEventListener('click',async ()=>{
+      if (!currentFile) return flash('Сначала загрузите .py файл (через кнопку "Загрузить свой .py" или перетяните его)');
+      // Create blob URL and download
+      const data = await currentFile.arrayBuffer();
+      const blob = new Blob([data], {type: 'text/x-python-script'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');a.href=url;a.download = currentFile.name || 'script.py';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+    })
+
+    // Copy name
+    document.getElementById('copyName').addEventListener('click',()=>{
+      if (!currentFile) return flash('Нет файла для копирования имени');
+      navigator.clipboard.writeText(currentFile.name).then(()=>flash('Имя скопировано'))
+    })
+
+    function flash(msg){
+      const t = document.createElement('div');t.textContent=msg;Object.assign(t.style,{position:'fixed',left:'50%',transform:'translateX(-50%)',bottom:'36px',padding:'8px 14px',borderRadius:'8px',background:'rgba(0,0,0,0.6)',color:'#fff',zIndex:9999});document.body.appendChild(t);
+      setTimeout(()=>t.style.opacity='0',1600);setTimeout(()=>t.remove(),2600);
+    }
+
+    // Small UX: when user chooses file through label
+    document.querySelector('label[for="fileInput"]').addEventListener('click',()=>fileInput.click());
+
+    // keyboard shortcut D to trigger download Blob for power users
+    addEventListener('keydown',e=>{if(e.key.toLowerCase()==='d'){document.getElementById('downloadBlob').click();}})
+
+    // ---------- Fancy small animations ----------
+    // small parallax for title
+    const title = document.querySelector('.title');
+    addEventListener('mousemove',e=>{
+      const cx = innerWidth/2, cy = innerHeight/2;
+      const dx = (e.clientX-cx)/cx, dy = (e.clientY-cy)/cy;
+      title.style.transform = `translate3d(${dx*6}px,${dy*6}px,0) rotate(${dx*2}deg)`;
+    })
+
+  </script>
 </body>
 </html>
