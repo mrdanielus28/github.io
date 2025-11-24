@@ -1,201 +1,231 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KMPCO & MADXS - GigaPlata - OFICIAL</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#0a0a0c"/>
+  <link rel="manifest" href="/manifest-c.json"/>
+  <title>GigaPlata — Full PWA</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    :root {
-      --bg: #0a0a0c;
-      --panel: #111118;
-      --accent: #b80000;
-      --text: #e0e0e0;
-      --text-dim: #979797;
-      --radius: 10px;
-      --speed: 0.25s;
-    }
-    * {margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
-    body{background:var(--bg);color:var(--text);padding-bottom:80px;}
-    header{width:100%;padding:30px 8%;background:var(--panel);border-bottom:2px solid #000;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;}
-    header h1{font-size:26px;font-weight:900;letter-spacing:1px;color:var(--accent);text-shadow:0 0 7px rgba(184,0,0,0.6);animation:headerPulse 4s infinite;}
-    nav{display:flex;gap:35px;}
-    nav a{text-decoration:none;color:var(--text-dim);font-size:15px;transition:var(--speed);}
-    nav a:hover{color:var(--accent);text-shadow:0 0 6px rgba(184,0,0,0.8);}
-    section{padding:70px 8%;}
-    h2{font-size:30px;margin-bottom:30px;color:var(--accent);}    
-    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:25px;}
-    .feature{background:var(--panel);padding:25px;border-radius:var(--radius);border:1px solid #000;transition:var(--speed);position:relative;}
-    .feature:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 0 15px rgba(184,0,0,0.4);}
-    .feature h3{margin-bottom:10px;color:var(--accent);}
-    .feature p{font-size:14px;color:var(--text-dim);line-height:1.4;}
-    .feature:hover::after{content:"";position:absolute;inset:0;border-radius:var(--radius);box-shadow:0 0 25px var(--accent);opacity:0.3;pointer-events:none;}
-    .download-box{margin-top:50px;display:flex;justify-content:center;}
-    .download-btn{background:var(--accent);padding:18px 40px;border:none;color:#fff;font-size:20px;border-radius:var(--radius);cursor:pointer;transition:var(--speed);font-weight:700;}
-    .download-btn:hover{transform:translateY(-4px);box-shadow:0 0 20px rgba(184,0,0,0.6);}
-    .forum-area{margin-top:30px;background:var(--panel);border-radius:var(--radius);padding:30px;border:1px solid #000;}
-    .topic-select{margin-bottom:20px;padding:8px 14px;background:#09090d;border:1px solid #000;border-radius:var(--radius);color:var(--text);}
-    .posts{display:flex;flex-direction:column;gap:20px;margin-bottom:25px;}
-    .post{background:#09090d;padding:15px;border-radius:var(--radius);border:1px solid #000;position:relative;display:flex;align-items:flex-start;gap:10px;}
-    .post img{width:40px;height:40px;border-radius:50%;}
-    .post-content{flex:1;}
-    .post span{font-size:13px;color:var(--text-dim);display:block;margin-top:5px;}
-    .post-header{font-weight:700;color:var(--accent);font-size:14px;}
-    textarea{width:100%;height:100px;background:#0d0d12;border:1px solid #000;border-radius:var(--radius);color:var(--text);padding:10px;margin-bottom:10px;resize:vertical;}
-    .send-btn{background:var(--accent);padding:12px 24px;border:none;border-radius:var(--radius);font-weight:700;cursor:pointer;transition:var(--speed);}
-    .send-btn:hover{box-shadow:0 0 15px rgba(184,0,0,0.5);transform:translateY(-3px);}
-    .like-btn{background:transparent;border:none;color:var(--accent);cursor:pointer;font-size:18px;transition:0.2s;margin-right:5px;}
-    .like-btn.liked{color:#fff;}
-    .edit-btn,.delete-btn{background:transparent;border:none;color:var(--accent);cursor:pointer;font-size:14px;margin-left:5px;transition:0.2s;}
-    canvas{margin-top:20px;}
-    @keyframes headerPulse{0%{text-shadow:0 0 4px var(--accent)}50%{text-shadow:0 0 14px var(--accent)}100%{text-shadow:0 0 4px var(--accent)}}
-    audio{display:none;}
-    .toast{position:fixed;bottom:20px;right:20px;background:#b80000;color:#fff;padding:12px 20px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity 0.4s;z-index:1000;}
-    .toast.show{opacity:1;pointer-events:auto;}
+    :root{--bg:#060606;--panel:#0f0f14;--accent:#b80000;--muted:#9a9a9a;--text:#e6e6e6;--radius:14px}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,Arial;background:linear-gradient(180deg,#070707,#030303);color:var(--text);min-height:100vh}
+    .app{max-width:1100px;margin:18px auto;padding:18px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    h1{color:var(--accent);margin:0}
+    .layout{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+    .card{background:var(--panel);border-radius:var(--radius);padding:16px;border:1px solid rgba(255,255,255,0.03)}
+    .form-row{display:flex;gap:8px}
+    input,textarea,select{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:10px;color:var(--text);width:100%}
+    .btn{background:var(--accent);color:#fff;padding:10px 12px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--accent);padding:8px;border-radius:10px;cursor:pointer}
+    .posts{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .post{display:flex;gap:12px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);align-items:flex-start}
+    .post img{width:56px;height:56px;border-radius:12px;object-fit:cover}
+    .meta{color:var(--muted);font-size:13px}
+    .post-actions{margin-left:auto;display:flex;flex-direction:column;gap:8px}
+    .modal-wrap{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:9999}
+    .modal{background:var(--panel);border-radius:12px;padding:18px;width:clamp(320px,60%,720px);border:1px solid rgba(255,255,255,0.03)}
+    .modal-header{display:flex;align-items:center;justify-content:space-between}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    footer{margin-top:20px;color:var(--muted);font-size:13px;text-align:center}
   </style>
 </head>
 <body>
-  <audio id="bgMusic" src="music.mp3" loop autoplay></audio>
-  <div id="toast" class="toast"></div>
+  <div class="app" id="app">
+    <header><h1>GigaPlata — Full PWA</h1><div class="meta" id="status" aria-live="polite">Состояние: online</div></header>
 
-  <header>
-    <h1>KMPCO & MADXS - GigaPlata</h1>
-    <nav>
-      <a href="#features">Главная</a>
-      <a href="#forum">Форум</a>
-      <a href="#download">Скачать</a>
-    </nav>
-  </header>
+    <div class="layout">
+      <main class="card" aria-labelledby="forumLabel">
+        <h2 id="forumLabel" style="color:var(--accent)">Форум</h2>
 
-  <section id="features">
-    <h2>Фишки сайта</h2>
-    <div class="features">
-      <div class="feature"><h3>Неон</h3><p>Брутальный минимализм. Без лишнего блеска.</p></div>
-      <div class="feature"><h3>Анимации</h3><p>Анимации только по делу — при наведении.</p></div>
-      <div class="feature"><h3>Тьма</h3><p>Глубокий тёмный стиль, никаких градиентов.</p></div>
-      <div class="feature"><h3>Офлайн</h3><p>Форум хранит сообщения даже после перезагрузки.</p></div>
+        <div class="form-row" style="margin-bottom:12px">
+          <select id="topic" aria-label="Тема"><option value="memes">Мемы</option><option value="tech">Техника</option><option value="ideas">Идеи</option></select>
+          <input id="username" placeholder="Имя (для сессии)" aria-label="Имя пользователя"/>
+          <button id="send" class="btn" aria-label="Отправить">Отправить</button>
+        </div>
+
+        <textarea id="msg" rows="4" placeholder="Текст сообщения..." aria-label="Текст сообщения"></textarea>
+
+        <div class="posts" id="posts" role="list"></div>
+      </main>
+
+      <aside class="card" aria-labelledby="statsLabel">
+        <h3 id="statsLabel" style="color:var(--accent)">Инструменты</h3>
+        <div style="margin-top:10px">
+          <canvas id="chart" width="320" height="160" aria-label="График скачиваний"></canvas>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button id="export" class="ghost">Экспорт</button>
+          <button id="importBtn" class="ghost">Импорт</button>
+          <input id="importFile" type="file" accept=".json" style="display:none"/>
+          <button id="clearAll" class="ghost">Очистить</button>
+        </div>
+
+        <div style="margin-top:12px" class="meta" id="outbox">Outbox: <span id="outboxCount">0</span></div>
+      </aside>
     </div>
-  </section>
 
-  <section id="forum">
-    <h2>Форум</h2>
-    <div class="forum-area">
-      <label for="topicSelect" style="display:none">Выбор темы</label>
-      <select class="topic-select" id="topicSelect">
-        <option value="memes">Мемы</option>
-        <option value="tech">Технические неполадки</option>
-        <option value="games">Игры</option>
-        <option value="ideas">Идеи и предложения</option>
-        <option value="bugs">Баги</option>
-        <option value="offtopic">Оффтоп</option>
-        <option value="other">Другое</option>
-        <option value="news">Новости</option>
-        <option value="fun">Развлечения</option>
-        <option value="tutorials">Туториалы</option>
-      </select>
-      <div class="posts" id="posts"></div>
-      <textarea id="msg" placeholder="Написать сообщение..."></textarea>
-      <input type="text" id="username" placeholder="Имя пользователя" style="margin-bottom:10px;width:100%;padding:8px;border-radius:var(--radius);border:1px solid #000;background:#0d0d12;color:var(--text);">
-      <input type="email" id="email" placeholder="E-mail" style="margin-bottom:10px;width:100%;padding:8px;border-radius:var(--radius);border:1px solid #000;background:#0d0d12;color:var(--text);">
-      <input type="text" id="avatar" placeholder="URL аватарки" style="margin-bottom:10px;width:100%;padding:8px;border-radius:var(--radius);border:1px solid #000;background:#0d0d12;color:var(--text);">
-      <button class="send-btn" id="send">Отправить</button>
-      <canvas id="downloadChart" width="400" height="150"></canvas>
+    <div class="modal-wrap" id="modalWrap" role="dialog" aria-hidden="true">
+      <div class="modal" role="document">
+        <div class="modal-header"><div class="modal-title" id="modalTitle">Modal</div><button id="modalClose" class="ghost" aria-label="Закрыть">✕</button></div>
+        <div id="modalContent" style="margin-top:12px"></div>
+        <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+          <button id="modalCancel" class="ghost">Отмена</button>
+          <button id="modalConfirm" class="btn">Подтвердить</button>
+        </div>
+      </div>
     </div>
-  </section>
 
-  <section id="download">
-    <h2>Скачать</h2>
-    <div class="download-box">
-      <a href="downloads/GigaPlata.exe" download id="downloadLink">
-        <button class="download-btn">Скачать GigaPlata.exe</button>
-      </a>
-    </div>
-  </section>
+    <footer>GigaPlata • PWA demo</footer>
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-const postsEl = document.getElementById('posts');
-const msg = document.getElementById('msg');
-const send = document.getElementById('send');
-const topic = document.getElementById('topicSelect');
-const toast = document.getElementById('toast');
-const username = document.getElementById('username');
-const email = document.getElementById('email');
-const avatar = document.getElementById('avatar');
-const downloadCanvas = document.getElementById('downloadChart').getContext('2d');
+/* Full PWA: accessible, outbox, import/export, modal confirm, chart, service worker */
+(() => {
+  const FORUM = 'giga_forum_c_v1';
+  const OUTBOX = 'giga_outbox_c_v1';
+  const DOWNLOADS = 'giga_downloads_c_v1';
 
-let downloadCount = 0;
-let downloadHistory = [];
+  const postsEl = document.getElementById('posts');
+  const topicEl = document.getElementById('topic');
+  const usernameEl = document.getElementById('username');
+  const msgEl = document.getElementById('msg');
+  const sendBtn = document.getElementById('send');
+  const outboxCount = document.getElementById('outboxCount');
+  const statusEl = document.getElementById('status');
 
-function showToast(message){toast.textContent = message; toast.classList.add('show'); setTimeout(()=>{toast.classList.remove('show');},3000);}
+  const modalWrap = document.getElementById('modalWrap');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalContent = document.getElementById('modalContent');
+  const modalClose = document.getElementById('modalClose');
+  const modalCancel = document.getElementById('modalCancel');
+  const modalConfirm = document.getElementById('modalConfirm');
 
-const downloadLink = document.getElementById('downloadLink');
-downloadLink.addEventListener('click',()=>{
-  downloadCount++;
-  downloadHistory.push(downloadCount);
-  showToast(`Файл скачан ${downloadCount} раз(а)`);
-  updateChart();
-});
+  const exportBtn = document.getElementById('export');
+  const importBtn = document.getElementById('importBtn');
+  const importFile = document.getElementById('importFile');
+  const clearAllBtn = document.getElementById('clearAll');
 
-const chart = new Chart(downloadCanvas, {
-  type:'line',
-  data:{
-    labels:[],
-    datasets:[{
-      label:'Скачивания',
-      data:[],
-      borderColor:'rgba(184,0,0,0.8)',
-      backgroundColor:'rgba(184,0,0,0.2)',
-      fill:true,
-      tension:0.4
-    }]
-  },
-  options:{
-    responsive:true,
-    animation:{duration:1000}
+  function read(key){ try { return JSON.parse(localStorage.getItem(key)||'{}'); } catch(e){ return {}; } }
+  function write(key,val){ localStorage.setItem(key, JSON.stringify(val)); }
+
+  function getForum(){ return read(FORUM) || {}; }
+  function setForum(obj){ write(FORUM, obj); }
+
+  function getOutbox(){ return JSON.parse(localStorage.getItem(OUTBOX)||'[]'); }
+  function setOutbox(arr){ localStorage.setItem(OUTBOX, JSON.stringify(arr)); outboxCount.textContent = arr.length; }
+
+  function addPostToForum(topic, post){
+    const f = getForum(); f[topic] ??= []; f[topic].push(post); setForum(f);
   }
-});
 
-function updateChart(){
-  chart.data.labels = downloadHistory.map((_,i)=>i+1);
-  chart.data.datasets[0].data = downloadHistory;
-  chart.update();
-}
+  function uid(){ return `${Date.now()}-${Math.random().toString(36).slice(2,8)}`; }
+  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function load(){
-  postsEl.innerHTML='';
-  const data = JSON.parse(localStorage.getItem('forum')||'{}');
-  const arr = topic ? data[topic.value]||[] : [];
-  for(const [i,p] of arr.entries()){
-    const el = document.createElement('div');
-    el.className='post';
-    el.innerHTML = `<img src='${p.avatar || 'https://via.placeholder.com/40'}'><div class='post-content'><div class='post-header'>${p.username || 'Аноним'} (${p.email || ''})</div><p>${p.text}</p><span>${p.time}</span></div>`;
-    const likeBtn = document.createElement('button'); likeBtn.className='like-btn'; likeBtn.innerHTML='❤'; likeBtn.onclick=()=>{ likeBtn.classList.toggle('liked'); showToast('Лайк добавлен!'); };
-    const editBtn = document.createElement('button'); editBtn.className='edit-btn'; editBtn.textContent='Редактировать'; editBtn.onclick=()=>{
-      if(username.value && username.value===p.username){
-        msg.value = p.text; username.value = p.username; email.value = p.email; avatar.value = p.avatar;
-        arr.splice(i,1); data[topic.value]=arr; localStorage.setItem('forum',JSON.stringify(data)); load();
-      } else {showToast('Редактировать можно только свой пост!');}
-    };
-    const deleteBtn = document.createElement('button'); deleteBtn.className='delete-btn'; deleteBtn.textContent='Удалить'; deleteBtn.onclick=()=>{
-      if(username.value && username.value===p.username){arr.splice(i,1); data[topic.value]=arr; localStorage.setItem('forum',JSON.stringify(data)); showToast('Сообщение удалено'); load();} else {showToast('Удалять можно только свой пост!');}
-    };
-    el.appendChild(likeBtn); el.appendChild(editBtn); el.appendChild(deleteBtn);
-    postsEl.appendChild(el);
+  function render(){
+    postsEl.innerHTML = '';
+    const f = getForum();
+    const arr = f[topicEl.value] || [];
+    if(!arr.length){ postsEl.innerHTML = '<div class="meta">Пусто</div>'; return; }
+    arr.slice().reverse().forEach(p => {
+      const li = document.createElement('div'); li.className='post'; li.setAttribute('role','listitem');
+      li.innerHTML = `<img src="${p.avatar||'https://via.placeholder.com/56'}" alt="avatar">
+        <div>
+          <div><strong>${escapeHtml(p.username)}</strong> <span class="meta">• ${new Date(p.time).toLocaleString()}</span></div>
+          <div style="margin-top:8px">${escapeHtml(p.text)}</div>
+        </div>
+        <div class="post-actions" aria-hidden="false">
+          <button class="ghost" data-id="${p.id}" data-action="preview">Preview</button>
+          <button class="ghost" data-id="${p.id}" data-action="delete">Delete</button>
+        </div>`;
+      postsEl.appendChild(li);
+    });
   }
-}
 
-if(topic){ topic.onchange = load; }
-send.onclick = ()=>{
-  if(!msg.value.trim() || !topic) return;
-  const data = JSON.parse(localStorage.getItem('forum')||'{}');
-  data[topic.value] ??= [];
-  data[topic.value].push({text:msg.value.trim(), time:new Date().toLocaleString(), username:username.value, email:email.value, avatar:avatar.value});
-  localStorage.setItem('forum', JSON.stringify(data));
-  msg.value=''; username.value=''; email.value=''; avatar.value='';
-  load();
-};
+  sendBtn.addEventListener('click', () => {
+    const text = (msgEl.value||'').trim(); if(!text) return alert('Введите текст');
+    const post = { id: uid(), username: usernameEl.value||'Аноним', text, avatar:'', time: new Date().toISOString() };
+    if(navigator.onLine){
+      addPostToForum(topicEl.value, post); render(); msgEl.value=''; announce('Сообщение опубликовано');
+    } else {
+      // add to outbox
+      const ob = getOutbox(); ob.push({topic:topicEl.value, post}); setOutbox(ob); msgEl.value=''; announce('Сохранено в Outbox (оффлайн)');
+    }
+  });
 
-load();
+  // modal handling
+  let modalConfirmCb = null;
+  function openModal(title, html, confirmCb){
+    modalTitle.textContent = title; modalContent.innerHTML = html; modalWrap.style.display='flex'; modalWrap.setAttribute('aria-hidden','false');
+    modalConfirmCb = confirmCb;
+    modalConfirm.focus();
+  }
+  function closeModal(){ modalWrap.style.display='none'; modalWrap.setAttribute('aria-hidden','true'); modalConfirmCb = null; }
+
+  modalClose.addEventListener('click', closeModal); modalCancel.addEventListener('click', closeModal);
+  modalConfirm.addEventListener('click', () => { if(modalConfirmCb) modalConfirmCb(); closeModal(); });
+
+  postsEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button'); if(!btn) return;
+    const id = btn.dataset.id; const action = btn.dataset.action;
+    const f = getForum(); const arr = f[topicEl.value] || []; const post = arr.find(p=>p.id===id);
+    if(action==='preview'){
+      openModal('Предпросмотр', `<strong>${escapeHtml(post.username)}</strong><div style="margin-top:8px">${escapeHtml(post.text)}</div>`);
+    } else if(action==='delete'){
+      openModal('Подтвердите удаление', `<div>Удалить сообщение от <strong>${escapeHtml(post.username)}</strong>?</div>`, () => {
+        const next = arr.filter(p=>p.id!==id); f[topicEl.value] = next; setForum(f); render(); announce('Сообщение удалено');
+      });
+    }
+  });
+
+  // outbox sync when back online
+  window.addEventListener('online', () => {
+    announce('Сеть: online'); statusEl.textContent = 'Состояние: online';
+    const ob = getOutbox(); if(ob.length){
+      const f = getForum();
+      ob.forEach(item => { f[item.topic] ??= []; f[item.topic].push(item.post); });
+      setForum(f); setOutbox([]); render(); announce('Очередь отправлена');
+    }
+  });
+  window.addEventListener('offline', () => { statusEl.textContent = 'Состояние: offline'; announce('Сеть: offline'); });
+
+  function announce(text){ const live = document.createElement('div'); live.className='sr-only'; live.setAttribute('aria-live','polite'); live.textContent=text; document.body.appendChild(live); setTimeout(()=>live.remove(),1500); }
+
+  // import/export & clear
+  exportBtn.addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(getForum(),null,2)], {type:'application/json'}); const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'giga_forum_export.json'; a.click(); URL.revokeObjectURL(url);
+  });
+  importBtn.addEventListener('click', () => importFile.click());
+  importFile.addEventListener('change', (e) => {
+    const f = e.target.files[0]; if(!f) return;
+    const reader = new FileReader(); reader.onload = (ev) => {
+      try { const data = JSON.parse(ev.target.result); setForum(data); render(); alert('Импортировано'); } catch(err){ alert('Неверный формат'); }
+    }; reader.readAsText(f);
+  });
+  clearAllBtn.addEventListener('click', () => { if(!confirm('Очистить всё?')) return; setForum({}); setOutbox([]); render(); announce('Данные очищены'); });
+
+  // downloads chart
+  const ctx = document.getElementById('chart').getContext('2d');
+  function drawChart(){
+    const raw = JSON.parse(localStorage.getItem(DOWNLOADS) || '[]');
+    const labels = raw.map(t=>new Date(t).toLocaleTimeString());
+    const data = raw.map((_,i)=>i+1);
+    if(window._chart) window._chart.destroy();
+    window._chart = new Chart(ctx, {type:'line',data:{labels, datasets:[{label:'Скачивания',data,fill:true,tension:0.3}]}, options:{plugins:{legend:{display:false}}}});
+  }
+  if(!localStorage.getItem(DOWNLOADS)) localStorage.setItem(DOWNLOADS, JSON.stringify([new Date().toISOString()]));
+  drawChart();
+
+  // service worker
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw-c.js').catch(console.error); }
+
+  // init
+  topicEl.addEventListener('change', render);
+  render();
+  setOutbox(getOutbox());
+})();
 </script>
 </body>
 </html>
