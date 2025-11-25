@@ -44,7 +44,8 @@
     .post-content{flex:1}
     .post-header{font-weight:700;color:var(--accent);font-size:14px}
     textarea{width:100%;height:84px;background:#0d0d12;border:1px solid #000;border-radius:var(--radius);color:var(--text);padding:8px;margin-bottom:8px;resize:vertical}
-    .auth-box{display:flex;flex-direction:column;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+    .auth-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,12,0.95);display:flex;justify-content:center;align-items:center;z-index:100;display:none;}
+    .auth-box{background:var(--panel);padding:20px;border-radius:var(--radius);display:flex;flex-direction:column;gap:12px;width:320px;}
     .auth-box input{padding:8px;border-radius:8px;background:#0d0d12;border:1px solid #000;color:var(--text);}
     .send-btn{background:var(--accent);padding:10px 16px;border:none;border-radius:var(--radius);font-weight:700;cursor:pointer;transition:var(--speed)}
     .send-btn:hover{box-shadow:0 0 15px rgba(184,0,0,0.5);transform:translateY(-3px)}
@@ -72,17 +73,16 @@
     </nav>
   </header>
 
-  <section id="authSection" style="padding:40px 8%;display:none;">
+  <div id="authOverlay" class="auth-overlay">
     <div class="auth-box">
       <input type="text" id="usernameInput" placeholder="Имя пользователя" />
       <input type="email" id="emailInput" placeholder="Email" />
       <input type="password" id="passwordInput" placeholder="Пароль" />
       <button class="send-btn" id="submitAuth">Отправить</button>
-      <div style="margin-top:8px;">
-        <button class="send-btn" id="googleLoginBtn">Войти через Google</button>
-      </div>
+      <button class="send-btn" id="googleLoginBtn">Войти через Google</button>
+      <button class="send-btn" id="closeAuth">Закрыть</button>
     </div>
-  </section>
+  </div>
 
   <section id="features">
     <h2>Фишки сайта</h2>
@@ -136,14 +136,16 @@ const toast = document.getElementById('toast');
 const cancelEditBtn = document.getElementById('cancelEdit');
 const loginBtn = document.getElementById('loginBtn');
 const regBtn = document.getElementById('regBtn');
-const authSection = document.getElementById('authSection');
+const authOverlay = document.getElementById('authOverlay');
+const closeAuth = document.getElementById('closeAuth');
 const googleLoginBtn = document.getElementById('googleLoginBtn');
 
 function showToast(msgText){toast.textContent = msgText; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),2500);}
 
-// Show/hide auth section
-loginBtn.addEventListener('click',()=>{authSection.style.display='block';});
-regBtn.addEventListener('click',()=>{authSection.style.display='block';});
+// Show/hide auth overlay
+loginBtn.addEventListener('click',()=>{authOverlay.style.display='flex';});
+regBtn.addEventListener('click',()=>{authOverlay.style.display='flex';});
+closeAuth.addEventListener('click',()=>{authOverlay.style.display='none';});
 
 // Downloads
 const globalCountEl = document.getElementById('globalCount');
