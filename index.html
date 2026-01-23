@@ -7,33 +7,41 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>  
-  <nav class="navbar">
-    <h1>KMPCO x MADXS - ofical site</h1>
-    <ul>
-      <li><a href="#home"><h3>Home</h3></a></li>
-      <li><a href="#about"><h3>About</h3></a></li>
-      <li><a href="#contact"><h3>Contact</h3></a></li>
+<header class="header">
+    <a href="#" class="logo"><h1>KMPCO&MADXS</h1></a>
+    <nav>
+      <ul>
+        <li><a href="#about-us">Про нас</a></li>
+        <li><a href="#poslugi">Послуги</a></li>
+        <li class="has-submenu"><a href="#" class="menu-toggle">Контакти</a>
           <ul>
-              <li><a href="#services"><h3>Services</h3></a></li>
-             <li><a href="#blog"><h3>Blog</h3></a></li>
-             <li><a href="#faq"><h3>FAQ</h3></a></li>
+            <li><a href="tel:+79001234567">Телефон</a></li>
+            <li><a href="#">Email</a></li>
+            <li><a href="#">Адреса</a></li>
           </ul>
+        </li>
+        <li class="has-submenu"><a href="#" class="menu-toggle">Блог</a>
+        <ul>
+          <li class="has-submenu"><a href="#" class="menu-toggle">КМПЦО Академія майбутнього</a>
           <ul>
-              <li><a href="#portfolio"><h3>Portfolio</h3></a></li>
-              <li><a href="#careers"><h3>Careers</h3></a></li>
-              <li><a href="#support"><h3>Support</h3></a></li>
+            <li><a href="#">Для розробників/вчителів</a></li>
+            <li><a href="#">Новини</a></li>
+            <li><a href="#">Про нас</a></li>
           </ul>
-    </ul>
-  </li>
-  <ul>
-      <li><a href="#testimonials"><h3>Testimonials</h3></a></li>
-      <li><a href="#team"><h3>Team</h3></a></li>
-  </ul>
-  <li><a href="#privacy"><h3>Privacy Policy</h3></a></li>
-</nav>
+          </li>
+          <li class="has-submenu"><a href="#" class="menu-toggle"><h5>MAPDXS Studio</h5></a>
+          <ul>
+            <li><a href="#">Для розробників</a></li>
+            <li><a href="#">Новини</a></li>
+            <li><a href="#">Про нас</a></li>
+          </ul>
+          </li>
+        </ul>
+        </li>
+        <li><a href="#">Допомога</a></li>
+        <li><a href="#">Форум</a></li>
+      </ul>
 </header>
-  
   <button type="button" onclick="alert('Привет, мир!');">подтвердить</button>
   <div class="content-wrapper">
     <div class="carousel-container">
@@ -73,6 +81,27 @@
     </div>
   </div>
   <script src="script.js"></script>
+
+<section id="about-us">
+    <h2>О нашей компании</h2>
+    <p style="color: rgba(234, 234, 234, 0.932);">Ми спеціалізуємося на наданні якісних освітніх послуг для дітей та дорослих.</p>
+    <p style="color: rgba(234, 234, 234, 0.932);">Наша місія - допомогти кожному розкрити свій потенціал та досягти успіху.</p>
+    <p style="color: rgba(234, 234, 234, 0.932);">Приєднуйтесь до нас і станьте частиною нашої спільноти!</p>
+</section>
+
+<p> /// </p>
+
+<section id="poslugi">
+    <h2>Послуги</h2>
+    <p style="color: rgba(234, 234, 234, 0.932);">Ми пропонуємо широкий спектр освітніх послуг для дітей та дорослих віком до 18 років.</p>
+    <p style="color: rgba(234, 234, 234, 0.932);">Наші послуги включають індивідуальні та групові заняття, онлайн-курси, майстер-класи та багато іншого.</p>
+    <p style="color: rgba(234, 234, 234, 0.932);">Наші досвідчені викладачі допоможуть вам досягти ваших навчальних цілей та розвинути нові навички.</p>
+    <p style="color: rgba(234, 234, 234, 0.932);"><a href="#">Зв'яжіться з нами сьогодні,</a> щоб дізнатися більше про наші послуги та записатися на заняття!</p>
+</section>
+
+<button class="up-button" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" title="Go to top" class="up-button">
+  &#8679;
+</button>
+
 </body>
 </html>
-
